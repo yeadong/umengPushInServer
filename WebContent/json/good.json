@@ -1,0 +1,191 @@
+{
+	"back_code": 200,
+	"typeslist": [
+		{
+			"id": 13,
+			"name": "樱布一品系列",
+			"arraylist": [
+				{
+					"id": 9,
+					"typeid": 13,
+					"printType": 2,
+					"goodsDesc": "",
+					"goodPrice": 3000,
+					"goodName": "黄家榴莲布丁"
+				}, {
+					"id": 10,
+					"typeid": 13,
+					"printType": 2,
+					"goodsDesc": "",
+					"goodPrice": 2500,
+					"goodName": "黄家原味布丁"
+				}, {
+					"id": 11,
+					"typeid": 13,
+					"printType": 2,
+					"goodsDesc": "店内推荐",
+					"goodPrice": 5900,
+					"goodName": "北海掉芒果千层蛋糕"
+				}, {
+					"id": 12,
+					"typeid": 13,
+					"printType": 2,
+					"goodsDesc": "店内推荐",
+					"goodPrice": 5900,
+					"goodName": "原味布丁卷"
+				}, {
+					"id": 13,
+					"typeid": 13,
+					"printType": 2,
+					"goodsDesc": "",
+					"goodPrice": 3000,
+					"goodName": "黄家红茶布丁"
+				}
+			]
+		}, {
+			"id": 14,
+			"name": "经典系列",
+			"arraylist": [
+				{
+					"id": 14,
+					"typeid": 14,
+					"printType": 1,
+					"goodsDesc": "店内推荐",
+					"goodPrice": 1800,
+					"goodName": "宫廷奶酪"
+				}, {
+					"id": 15,
+					"typeid": 14,
+					"printType": 1,
+					"goodsDesc": "招牌",
+					"goodPrice": 2200,
+					"goodName": "芝士奶酪(斯被浓缩)"
+				}, {
+					"id": 16,
+					"typeid": 14,
+					"printType": 1,
+					"goodsDesc": "",
+					"goodPrice": 1500,
+					"goodName": "玫瑰奶酪"
+				}, {
+					"id": 17,
+					"typeid": 14,
+					"printType": 1,
+					"goodsDesc": "",
+					"goodPrice": 1500,
+					"goodName": "香草奶酪"
+				}, {
+					"id": 18,
+					"typeid": 14,
+					"printType": 1,
+					"goodsDesc": "招牌",
+					"goodPrice": 1500,
+					"goodName": "杏仁奶酪"
+				}, {
+					"id": 19,
+					"typeid": 14,
+					"printType": 1,
+					"goodsDesc": "",
+					"goodPrice": 1500,
+					"goodName": "真果奶酪"
+				}, {
+					"id": 20,
+					"typeid": 14,
+					"printType": 1,
+					"goodsDesc": "",
+					"goodPrice": 1500,
+					"goodName": "抹茶奶酪"
+				}, {
+					"id": 21,
+					"typeid": 14,
+					"printType": 1,
+					"goodsDesc": "招牌",
+					"goodPrice": 1500,
+					"goodName": "提拉米苏奶酪"
+				}
+			]
+		}, {
+			"id": 15,
+			"name": "水果奶酪系列",
+			"arraylist": [
+				{
+					"id": 22,
+					"typeid": 15,
+					"printType": 2,
+					"goodsDesc": "",
+					"goodPrice": 1800,
+					"goodName": "青拧奶酪"
+				}, {
+					"id": 23,
+					"typeid": 15,
+					"printType": 2,
+					"goodsDesc": "",
+					"goodPrice": 1800,
+					"goodName": "榴莲奶酪"
+				}, {
+					"id": 24,
+					"typeid": 15,
+					"printType": 2,
+					"goodsDesc": "很不错",
+					"goodPrice": 1600,
+					"goodName": "蓝莓奶酪"
+				}, {
+					"id": 25,
+					"typeid": 15,
+					"printType": 2,
+					"goodsDesc": "",
+					"goodPrice": 1600,
+					"goodName": "荔枝奶酪"
+				}, {
+					"id": 26,
+					"typeid": 15,
+					"printType": 2,
+					"goodsDesc": "招牌",
+					"goodPrice": 1600,
+					"goodName": "草莓奶酪"
+				}, {
+					"id": 27,
+					"typeid": 15,
+					"printType": 2,
+					"goodsDesc": "",
+					"goodPrice": 1600,
+					"goodName": "水蜜桃奶酪"
+				}
+			]
+		}, {
+			"id": 16,
+			"name": "宇宙魔豆系列",
+			"arraylist": [
+				{
+					"id": 28,
+					"typeid": 16,
+					"printType": 2,
+					"goodsDesc": "吃吃吃",
+					"goodPrice": 1800,
+					"goodName": "蓝莓魔豆奶酪"
+				}, {
+					"id": 29,
+					"typeid": 16,
+					"printType": 2,
+					"goodsDesc": "",
+					"goodPrice": 1800,
+					"goodName": "草莓魔豆奶酪"
+				}
+			]
+		}, {
+			"id": 17,
+			"name": "鲜奶冻系列",
+			"arraylist": [
+				{
+					"id": 30,
+					"typeid": 17,
+					"printType": 2,
+					"goodsDesc": "米至配方",
+					"goodPrice": 2200,
+					"goodName": "彩虹杯"
+				}
+			]
+		}
+	],
+	"typescount": 5
+}

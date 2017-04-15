@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wap.dao.OrderMessageMapper">
+	<resultMap type="com.wap.entity.OrderMessageEntity" id="orderMessageMap">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="msg_info" property="msgInfo" jdbcType="VARCHAR" />
+		<result column="merchant_id" property="merchantId" jdbcType="BIGINT" />
+		<result column="msg_type" property="msgType" jdbcType="BIGINT" />
+		<result column="store_id" property="storeId" jdbcType="BIGINT" />
+		<result column="oper_id" property="operId" jdbcType="BIGINT" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="oper_time" property="operTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<select id="findMessageEntities" resultMap="orderMessageMap">
+		SELECT
+		id,msg_type,msg_info,merchant_id,store_id,oper_id,create_time,oper_time
+		FROM order_message WHERE store_id=#{0} GROUP BY id DESC
+	</select>
+
+	<insert id="insertMessage" parameterType="com.wap.entity.OrderMessageEntity">
+		insert INTO
+		order_message
+		(msg_type,msg_info,merchant_id,store_id,create_time)
+		VALUES(#{msgType},#{msgInfo},#{merchantId},#{storeId},#{createTime});
+
+	</insert>
+
+	<update id="changeMessageOper">
+		UPDATE order_message SET oper_id=#{0} WHERE id=#{1}
+	</update>
+
+<!-- 	<resultMap type="java.util.Map" id="deviceTokenMap">
+		<result column="umeng_token" property="token" />
+		<result column="uuid" property="uuid" />
+		<result column="oper_id" property="operid" />
+	</resultMap>
+	<select id="deviceEntities" resultMap="deviceTokenMap">
+		CALL
+		change_devicetoken(#{operid});
+	</select>
+ -->
+	<resultMap type="java.util.Map" id="selcttoken">
+		<result column="oper_id" property="oid" />
+		<result column="umeng_token" property="umtoken" />
+	</resultMap>
+	<select id="queryUmengToken" resultMap="selcttoken">
+		SELECT
+		oper_id,umeng_token from order_oper_device WHERE oper_id IN(SELECT id
+		FROM order_operater WHERE store_id=#{0}) AND umeng_token!='' AND
+		isdel=0;
+	</select>
+</mapper>

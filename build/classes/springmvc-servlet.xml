@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:mybatis="http://mybatis.org/schema/mybatis-spring" xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+	http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd 
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/mvc 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd 
+	http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd"> -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	     http://www.springframework.org/schema/beans/spring-beans.xsd 
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.1.xsd 
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd">
+
+	<!-- scan the package and the sub package -->
+	<!-- <context:component-scan base-package="com.gjcm.controller" /> <context:component-scan 
+		base-package="com.gjcm.service" /> <context:component-scan base-package="com.gjcm.dao" 
+		/> -->
+	<context:component-scan base-package="com.wap.controller" />
+	<context:component-scan base-package="com.wap.service" />
+	<context:component-scan base-package="com.wap.dao" />
+
+
+	<!-- don't handle the static resource -->
+	<mvc:default-servlet-handler />
+
+	<!-- if you use annotation you must configure following setting -->
+	<!-- <mvc:annotation-driven /> -->
+	<!-- <mvc:annotation-driven> <mvc:message-converters register-defaults="true"> 
+		<bean class="org.springframework.http.converter.StringHttpMessageConverter"> 
+		<property name="supportedMediaTypes" value="text/plain;charset=UTF-8" /> 
+		</bean> </mvc:message-converters> </mvc:annotation-driven> -->
+	<!-- 解决@ResponseBody 的实现类其默认的编码是 iso-8859-1的问题 -->
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<!-- default StringHttpMessageConverter, solve encoding problem -->
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<constructor-arg value="UTF-8" />
+				<property name="writeAcceptCharset" value="false" />
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+	<!-- configure the InternalResourceViewResolver -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+		id="internalResourceViewResolver">
+		<!-- 前缀 -->
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<!-- 后缀 -->
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<!-- upload settings -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="102400000"></property>
+	</bean>
+</beans>

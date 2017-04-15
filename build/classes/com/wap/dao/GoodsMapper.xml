@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wap.dao.GoodsMapper">
+	<!-- // goods.id, // goods.`name`,goods.price,type.`name`,goods.merchant_id,goods_desc -->
+	<resultMap id="BaseGoodMap" type="com.wap.entity.GoodsEntity">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="goods_type" property="typeid" jdbcType="BIGINT" />
+		<result column="name" property="goodName" jdbcType="VARCHAR" />
+		<result column="price" property="goodPrice" jdbcType="INTEGER" />
+		<result column="print_type" property="printType" jdbcType="INTEGER" />
+		<result column="goods_desc" property="goodsDesc" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="SelectGoodAll" resultMap="BaseGoodMap">
+	SELECT
+		goods.id,goods.goods_type,
+		goods.`name`,goods.price,goods.merchant_id,goods_desc ,type.print_type FROM order_goods
+		goods,order_goods_type type WHERE goods.goods_type=type.id and
+		goods.merchant_id=#{0}
+	</select>
+	<resultMap type="com.wap.entity.GoodsType" id="BaseTypeMap">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="selectGoodType" resultMap="BaseTypeMap">
+		SELECT oot.id,oot.name
+		FROM order_goods_type oot
+		WHERE oot.merchant_id=#{0} AND oot.del_flag=1
+	</select>
+
+	<insert id="addOrderinfo" parameterType="com.wap.entity.OrderOrderInfo"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO
+		`order_order_info`(merchant_id,store_id,desk_id,customer_id,person_num,create_time,order_way,order_amount,order_status,pay_way,pay_order_id,remark,oper_id)
+		VALUES (#{merchantId,jdbcType=BIGINT},
+		#{storeId,jdbcType=BIGINT},
+		#{deskId,jdbcType=BIGINT},
+		#{customerId,jdbcType=BIGINT},
+		#{personNum,jdbcType=SMALLINT},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{orderWay,jdbcType=BIT},
+		#{orderAmount,jdbcType=INTEGER},
+		#{orderStatus,jdbcType=BIT},
+		#{payWay,jdbcType=BIT},
+		#{payOrderId,jdbcType=BIGINT},
+		#{remark,jdbcType=VARCHAR},
+		#{operId,jdbcType=BIGINT})
+
+	</insert>
+	<insert id="addOrderDetail">
+		INSERT INTO
+		`order_order_detail`(`order_id`,`goods_id`,`goods_num`,`create_time`,`del_flag`,`goods_status`)
+		VALUES (#{order_id,jdbcType=BIGINT}, #{goods_id,jdbcType=BIGINT},
+		#{goods_num,jdbcType=INTEGER}, #{create_time,jdbcType=TIMESTAMP},1,1)
+	</insert>
+	<update id="updateDeskStatus">
+		UPDATE order_desk SET desk_status =1 WHERE
+		id=#{deskid}
+	</update>
+
+</mapper>

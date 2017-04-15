@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title></title>
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link href="../css/mui.min.css" rel="stylesheet" />
+</head>
+
+<body style="background: #C7C7CC; text-align: center;">
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+		mui.init();
+		function getUserCode() {
+			var backurl = "https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2016090201837003&scope=auth_user&redirect_uri=";
+			console.log(backurl);
+			backurl = encodeURI(backurl);
+			console.log(backurl);
+			var url = "https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2016090201837003&scope=auth_user&redirect_uri=";
+			mui.ajax(url, {
+				data: {
+					deskid: "8"
+				},
+				type: 'post', //HTTP请求类型
+				timeout: 4000, //超时时间设置为10秒；
+				success: function(data) {
+					console.info(data);
+				},
+				error: function(xhr, type, errorThrown) {
+					console.log(type);
+				}
+			}); 
+		}
+	</script>
+
+	<button style="margin-top: 100px;" onclick="getUserCode()">开始点餐</button>
+
+</body>
+
+</html>

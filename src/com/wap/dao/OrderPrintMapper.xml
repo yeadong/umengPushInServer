@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wap.dao.OrderPrintMapper">
+	<resultMap id="BaseResultMap" type="com.wap.entity.OrderPrintEntity">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="print_mode" property="printMode" jdbcType="INTEGER" />
+		<result column="IP" property="IP" jdbcType="VARCHAR" />
+		<result column="port" property="port" jdbcType="INTEGER" />
+		<result column="store_id" property="storeId" jdbcType="BIGINT" />
+		<result column="del_flag" property="delFlag" jdbcType="INTEGER" />
+		<result column="print_type" property="printType" jdbcType="INTEGER" />
+	</resultMap>
+	<select id="StorePrint" resultMap="BaseResultMap">
+		SELECT
+		id,name,print_mode,IP,`port`,store_id,del_flag,print_type FROM
+		order_print WHERE store_id=#{storeid}
+	</select>
+	<insert id="insertPrint" parameterType="com.wap.entity.OrderPrintEntity">
+		INSERT INTO order_print
+		(name,print_mode,IP,`port`,store_id,del_flag,print_type)VALUES
+		(print.name,print.print_mode,print.IP,print.port,print.store_id,print.del_flag,print.print_type);
+	</insert>
+</mapper>

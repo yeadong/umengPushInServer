@@ -1,0 +1,15 @@
+200 成功
+401  错误
+501  获取失败，没有数据{"back_code":"501","error_msg":"获取失败，没有数据"}
+301  不能为空
+302  修改失败
+502 提交出错
+505 未同步
+407 转化异常
+
+登录成功
+{"lid":1001,"sid":111114,"uphone":"15001218005","upwd":"123456","mid":111114,"uuid":"123456","ocunt":1,"utoken":"789456123"}
+登录失败
+{"lid":0,"sid":0,"uphone":"15000","upwd":"1223","mid":0,"uuid":"123456","ocunt":0,"utoken":"789456123"}
+
+{"id":4,"createTime":"Wed Feb 08 11:11:00 CST 2017","backlist":[{"id":16,"num":2,"price":20.23,"style":"","oname":"哲皮黄瓜","opic":"http://192.168.1.156:7070/UmengPushServer/img/huanggua.png","note":"很好吃啊"},{"id":19,"num":1,"price":13,"style":"","oname":"蔬菜炒面","opic":"http://192.168.1.156:7070/UmengPushServer/img/sccm.png","note":"多吃蔬菜 好"}],"customerId":1004,"personNum":3,"remark":"尽快","orderAmount":3894,"isarray":true,"deskname":"贵宾桌","orderStatus":2}

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wap.dao.KxfOrderDetailMapper">
+	<resultMap id="BaseResultMap" type="com.wap.entity.KxfOrderDetail">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="order_id" property="orderId" jdbcType="BIGINT" />
+		<result column="name" property="goodName" jdbcType="VARCHAR" />
+		<result column="picture_addr" property="pictureAddr" jdbcType="VARCHAR" />
+		<result column="goods_num" property="goodsNum" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="price" property="goodPrice" jdbcType="INTEGER" />
+		<result column="del_flag" property="delFlag" jdbcType="INTEGER" />
+		<result column="goods_desc" property="goodDesc" jdbcType="VARCHAR" />
+		<result column="goods_status" property="goodstatus" jdbcType="INTEGER" />
+		<result column="print_type" property="printType" jdbcType="INTEGER" />
+	</resultMap>
+
+	<resultMap id="OrderResultMap" type="com.wap.entity.OrderOrderDetail">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="order_id" property="orderId" jdbcType="BIGINT" />
+		<result column="goods_id" property="goodsId" jdbcType="BIGINT" />
+		<result column="goods_num" property="goodsNum" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="del_flag" property="delFlag" jdbcType="BIT" />
+	</resultMap>
+	<sql id="baseCloum">
+		id, order_id,
+		`name`,goods_num,price,create_time,
+		picture_addr,del_flag,goods_desc
+	</sql>
+	<select id="selectOrderDetailAll" resultMap="BaseResultMap">
+		SELECT
+		ood.id,ood.order_id,og.`name`,ood.goods_num,og.price,ood.create_time,og.picture_addr,ood.del_flag,og.goods_desc,ood.goods_status,ogt.print_type
+		FROM order_order_detail AS ood,order_goods AS og,order_goods_type AS
+		ogt WHERE ood.goods_id=og.id AND og.goods_type=ogt.id AND
+		ood.order_id=#{0} AND ood.del_flag=1;
+	</select>
+	<update id="updateOrderNum">
+		UPDATE order_order_detail detail SET
+		detail.goods_num=#{0} WHERE
+		detail.id=#{1}
+	</update>
+	<update id="updateOrderDel">
+		UPDATE order_order_detail detail
+		SET detail.del_flag=0
+		WHERE detail.id=#{0}
+	</update>
+	<insert id="addDetail">
+		INSERT INTO
+		order_order_detail
+		(order_id,goods_id,goods_num,create_time,del_flag,goods_status)
+		VALUES
+		(#{0},#{1},#{2},#{3},#{4},1)
+	</insert>
+	<update id="changeStatus">
+		UPDATE order_order_detail ood SET ood.goods_status=0
+		WHERE ood.id=#{0} and
+		ood.del_flag=1
+	</update>
+	<select id="selectDetailAllAm">
+		SELECT SUM( ood.goods_num*ig.price) FROM
+		order_order_detail as ood INNER
+		JOIN order_goods as ig ON
+		ood.goods_id=ig.id WHERE ood.order_id= #{orderid}
+		AND ood.del_flag=1 ;
+	</select>
+	<parameterMap type="java.util.Map" id="changeOrderMap">
+		<parameter property="poid" mode="IN" jdbcType="BIGINT" />
+		<parameter property="back_count" mode="OUT" jdbcType="INTEGER" />
+	</parameterMap>
+	<select id="orderinfoCcgc" statementType="CALLABLE"
+		parameterMap="changeOrderMap">
+		call change_orderinfo(?,?)
+	</select>
+
+
+	<select id="changeOrderAm">
+		SET @a=0;
+		SET @a= (SELECT SUM( ood.goods_num*ig.price)
+		FROM order_order_detail as
+		ood INNER JOIN order_goods as ig ON
+		ood.goods_id=ig.id WHERE ood.order_id= 80 AND ood.del_flag=1 );
+		UPDATE
+		order_order_info AS ooi SET ooi.order_amount =@a WHERE ooi.id=80;
+	</select>
+	
+	<select resultType="com.wap.entity.GoodsType" id="getCatMap">
+	SELECT name,id FROM order_goods_type  WHERE merchant_id=111114 AND del_flag=1;
+	</select>
+	
+</mapper>
+
+

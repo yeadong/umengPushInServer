@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wap.dao.KxfCustomerMapper">
+	<parameterMap type="java.util.Map" id="customerMap">
+		<parameter property="user_code" mode="IN" jdbcType="VARCHAR" />
+		<parameter property="back_count" mode="OUT" jdbcType="INTEGER" />
+		<parameter property="customer_id" mode="OUT" jdbcType="BIGINT" />
+	</parameterMap>
+	<select id="addCustomerGetId" statementType="CALLABLE"
+		parameterMap="customerMap" resultType="java.util.Map">
+		CALL customerProcedure(?,?,?)
+	</select>
+	<parameterMap type="java.util.Map" id="excitOrderMap">
+		<parameter property="deskid" mode="IN" jdbcType="BIGINT" />
+		<parameter property="back_count" mode="OUT" jdbcType="INTEGER" />
+		<parameter property="order_id" mode="OUT" jdbcType="BIGINT" />
+	</parameterMap>
+	<select id="excitOrderId" statementType="CALLABLE" parameterMap="excitOrderMap"
+		resultType="java.util.Map">
+		CALL webOrderExists(?,?,?)
+	</select>
+</mapper>

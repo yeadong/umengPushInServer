@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wap.dao.DeskMapper">
+	<resultMap type="com.wap.entity.DeskEntity" id="deskmap">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="store_id" property="storeid" jdbcType="BIGINT" />
+		<!-- <result column="customer_id" property="customerid" jdbcType="VARCHAR" 
+			/> -->
+		<result column="person_num" property="persin" jdbcType="INTEGER" />
+		<result column="name" property="dname" jdbcType="VARCHAR" />
+		<result column="desk_status" property="dstatus" jdbcType="INTEGER" />
+	</resultMap>
+
+
+	<select id="selectDeskStatus" resultMap="deskmap">
+		<!-- SELECT od.id,ooi.store_id, ooi.customer_id, ooi.person_num,od.`name` 
+			FROM order_order_info AS ooi INNER JOIN order_desk AS od ON ooi.desk_id=od.id 
+			WHERE ooi.store_id=#{store_id} and od.del_flag=1 <if test="ostatus!=0"> and 
+			ooi.order_status=#{ostatus} </if> -->
+		SELECT id,`name`, person_num, store_id,desk_status FROM order_desk
+		WHERE
+		del_flag=1 AND store_id =#{store_id}
+		<if test="ostatus!=3">
+			and desk_status=#{ostatus}
+		</if>
+	</select>
+
+	<select id="getOrderId" resultType="java.lang.Long">
+	SELECT id FROM
+		order_order_info WHERE order_status=2 OR 3 AND desk_id=#{0} GROUP BY  id DESC LIMIT 1;
+	</select>
+	<resultMap type="com.wap.entity.ServingAm" id="selectServing">
+		<result column="merchant_id" property="merchantid" jdbcType="INTEGER" />
+		<result column="id" property="storeid" jdbcType="INTEGER" />
+		<result column="store_name" property="storename" jdbcType="INTEGER" />
+	</resultMap>
+	<select id="getStoreInfo"  resultType="java.util.Map">
+		SELECT merchant_id,id,store_name FROM store WHERE id=4049 AND `enable`=0;
+	</select>
+
+</mapper>

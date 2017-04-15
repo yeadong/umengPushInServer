@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wap.dao.KxfOrderInfoMapper">
+	<resultMap id="BaseResultMap" type="com.wap.entity.KxfOrderInfo">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="name" property="deskname" jdbcType="VARCHAR" />
+		<result column="customer_id" property="customerId" jdbcType="BIGINT" />
+		<result column="desk_id" property="deskid" jdbcType="BIGINT" />
+		<result column="person_num" property="personNum" jdbcType="SMALLINT" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="order_amount" property="orderAmount" jdbcType="INTEGER" />
+		<result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, merchant_id, store_id, desk_id, customer_id,
+		person_num,
+		create_time, order_way,
+		order_amount, order_status, pay_way,
+		pay_order_id, remark
+	</sql>
+	<select id="slectMyOrdering" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		SELECT
+		ooi.id,ooi.order_amount,ooi.remark,ooi.order_amount,ooi.customer_id,ooi.create_time,ooi.person_num,ooi.order_status,
+		desk.name
+		FROM order_order_info ooi INNER JOIN order_desk desk ON
+		ooi.desk_id=desk.id WHERE
+		ooi.order_status=2 AND
+		ooi.store_id=#{0}
+	</select>
+	<select id="selectOrderByID" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		SELECT
+		ooi.id,ooi.order_amount,ooi.remark,ooi.order_amount,ooi.customer_id,ooi.create_time,ooi.person_num,ooi.order_status,
+		desk.name,ooi.desk_id
+		FROM order_order_info ooi INNER JOIN order_desk
+		desk ON
+		ooi.desk_id=desk.id WHERE
+		ooi.id=#{0}
+	</select>
+
+	<update id="updateOrderAm">
+		UPDATE order_order_info ooi SET
+		ooi.order_amount=#{0},ooi.order_status=3 ,oper_id =#{2} WHERE
+		ooi.id=#{1}
+	</update><!-- type 0 全部 1 待接单 2-已下单3 -已上齐4-已付款 '订单状态， 1点餐中，2下单中， 3已下单， 4已上齐,5 
+		已结账 6 退单' Long id, Integer nowPage, Integer pageCon,Integer orderstatus -->
+	<select id="slectMyOrderCom" resultMap="BaseResultMap">
+		SELECT
+		ooi.id,ooi.order_amount,ooi.remark,ooi.customer_id,ooi.create_time,ooi.person_num,ooi.order_status,
+		desk.name
+		FROM order_order_info ooi INNER JOIN order_desk desk ON
+		ooi.desk_id=desk.id WHERE ooi.store_id=#{id}
+		<if test="orderstatus==1">
+			AND ooi.order_status=2
+		</if>
+		<if test="orderstatus==2"> AND ooi.order_status=3
+
+		</if>
+		<if test="orderstatus==3"> AND ooi.order_status=4
+
+		</if>
+		<if test="orderstatus==4">AND ooi.order_status=5
+
+		</if>
+		<if test="orderstatus==5">AND ooi.order_status=6
+		</if>
+		AND ooi.create_time between #{beigin} AND #{end}
+		
+		ORDER BY ooi.create_time DESC LIMIT
+		#{nowPage},#{pageCon}
+	</select>
+	<select id="slectOrderComCount" resultType="java.lang.Integer">
+		SELECT COUNT(id) FROM
+		order_order_info ooi WHERE ooi.store_id=#{id}
+
+		<if test="orderstatus==1">
+			AND ooi.order_status=2
+		</if>
+		<if test="orderstatus==2"> AND ooi.order_status=3
+
+		</if>
+		<if test="orderstatus==3"> AND ooi.order_status=4
+
+		</if>
+		<if test="orderstatus==4">AND ooi.order_status=5
+
+		</if>
+		<if test="orderstatus==5">AND ooi.order_status=6
+		</if>
+		AND ooi.create_time between #{beigin} AND #{end}
+	</select>
+	<resultMap type="com.wap.entity.ServingAm" id="selectServing">
+		<result column="osum" property="sumAm" jdbcType="INTEGER" />
+		<result column="ocount" property="allcount" jdbcType="INTEGER" />
+		<result column="operson" property="allperson" jdbcType="INTEGER" />
+	</resultMap>
+	<select id="selectOrderTimeAm" resultMap="selectServing">
+		SELECT
+		SUM(ooi.order_amount) AS osum, COUNT(ooi.id)
+		AS ocount,
+		SUM(ooi.person_num) operson FROM order_order_info ooi WHERE
+		ooi.store_id=#{0} AND (ooi.create_time BETWEEN #{1}
+		AND #{2});
+	</select>
+	<update id="updateOrderCom">
+		UPDATE order_order_info SET order_status = 4 WHERE
+		id=#{0}
+	</update>
+	<update id="updateDeskUsers">
+		UPDATE order_desk SET desk_status=1 WHERE id=#{0}
+	</update>
+	<update id="updateDeskCom">
+		UPDATE order_desk SET desk_status=0 WHERE id=#{0}
+	</update>
+	<parameterMap type="java.util.Map" id="orderinfoAm">
+		<parameter property="btime" mode="IN" jdbcType="VARCHAR" />
+		<parameter property="etime" mode="IN" jdbcType="VARCHAR" />
+		<parameter property="sid" mode="IN" jdbcType="BIGINT" />
+		<parameter property="oam" mode="OUT" jdbcType="INTEGER" />
+		<parameter property="ocount" mode="OUT" jdbcType="INTEGER" />
+		<parameter property="operson" mode="OUT" jdbcType="INTEGER" />
+		<parameter property="orecount" mode="OUT" jdbcType="INTEGER" />
+	</parameterMap>
+	<select id="testoam" parameterMap="orderinfoAm" resultType="java.util.Map"
+		statementType="CALLABLE">
+		call order_servingam(?,?,?,?,?,?,?);
+	</select>
+	<update id="updateOrderPay">
+		UPDATE order_order_info SET oper_id=#{0} ,
+		order_status= 5 WHERE id=#{1}
+	</update>
+	<update id="changeOrdeDeatilCom">
+		CALL
+		order_orcom(#{0},#{1},#{2});
+	</update>
+	<resultMap id="customerOrderMap" type="com.wap.entity.CustomerOrderEntity">
+		<id column="id" property="orderId" jdbcType="BIGINT" />
+		<result column="create_time" property="nowDate" jdbcType="TIMESTAMP" />
+		<result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+		<result column="order_amount" property="orderAm" jdbcType="INTEGER" />
+	</resultMap>
+	<select id="getAllCustomerOrder" resultMap="customerOrderMap">
+		SELECT
+		id,create_time,order_status,order_amount FROM order_order_info WHERE
+		customer_id=#{0} GROUP BY id DESC;
+	</select>
+	<update id="changeOrderPay">
+		UPDATE order_order_info AS ooi SET ooi.order_status=5
+		<if test="payway==1">
+			, ooi.pay_way=1,
+			pay_order_id=#{payid} WHERE
+			ooi.id=#{orderid}
+		</if>
+		<if test="payway==2">
+			, ooi.pay_way=2,
+			pay_order_id=#{payid} WHERE
+			ooi.id=#{orderid}
+		</if>
+		<if test="payway==3">
+			, ooi.pay_way=3 WHERE ooi.id=#{orderid}
+		</if>
+		<if test="payway==4">
+			, ooi.pay_way=4 WHERE ooi.id=#{orderid}
+		</if>
+	</update>
+	<update id="updateDeskStatus">
+		UPDATE order_desk SET desk_status=0 WHERE id= #{deskId}
+	</update>
+</mapper>

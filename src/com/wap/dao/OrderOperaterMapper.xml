@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wap.dao.OrderOperaterMapper">
+	<resultMap type="com.wap.entity.OrderOperaterEntity" id="operaterMap">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="name" property="typeid" jdbcType="VARCHAR" />
+		<result column="mobile" property="goodName" jdbcType="VARCHAR" />
+		<result column="ower_flag" property="owerFlag" jdbcType="INTEGER" />
+		<result column="merchant_id" property="merchantId" jdbcType="BIGINT" />
+		<result column="store_id" property="storeId" jdbcType="BIGINT" />
+		<result column="online_flag" property="onlineFlag" jdbcType="INTEGER" />
+	</resultMap>
+	<select id="loginOperater" resultMap="operaterMap">
+		SELECT
+		id,name,mobile,ower_flag,merchant_id,store_id,online_flag FROM
+		order_operater WHERE del_flag=1 AND mobile=#{0} AND
+		`password`=#{1}
+	</select>
+	<parameterMap type="java.util.Map" id="loginMap">
+		<parameter property="uphone" mode="IN" jdbcType="VARCHAR" />
+		<parameter property="upwd" mode="IN" jdbcType="VARCHAR" />
+		<parameter property="utoken" mode="IN" jdbcType="VARCHAR" />
+		<parameter property="uuid" mode="IN" jdbcType="VARCHAR" />
+		<parameter property="ocunt" mode="OUT" jdbcType="INTEGER" />
+		<parameter property="mid" mode="OUT" jdbcType="BIGINT" />
+		<parameter property="sid" mode="OUT" jdbcType="BIGINT" />
+		<parameter property="lid" mode="OUT" jdbcType="BIGINT" />
+	</parameterMap>
+
+	<select id="updateOperater" statementType="CALLABLE"
+		parameterMap="loginMap" resultType="java.util.Map">
+		CALL change_devicetoken(?,?,?,?,?,?,?,?);
+	</select>
+	<insert id="addCustomer">
+		INSERT INTO order_customer
+		(mobile,password,create_time,del_flag,user_id,user_type)
+		VALUES('00','00',NOW(),1,#{0},2);
+	</insert>
+	 <!-- <parameterMap type="java.util.Map" id="customerMap">
+		<parameter property="user_code" mode="IN" jdbcType="VARCHAR" />
+		<parameter property="back_count" mode="OUT" jdbcType="INTEGER" />
+		<parameter property="customer_id" mode="OUT" jdbcType="LONG" />
+	</parameterMap>
+	<select id="getCustomerId" statementType="CALLABLE"
+		parameterMap="customerMap" resultMap="java.util.Map">
+		CALL customerProcedure(?,?,?)
+	</select>  --> 
+</mapper>
